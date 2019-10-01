@@ -17,7 +17,7 @@ export default {
       title: this.name,
       meta: [
         // hid est utiliser comme identifiant unique. N'utilisez pas `vmid` car ça ne fonctionnera pas
-        { hid: 'description', name: this.name, content: `Ma description de ${this.name}` }
+        { hid: 'description', name: "description", content: `Ma description de ${this.name}` }
       ]
     }
   }
