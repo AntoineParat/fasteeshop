@@ -75,7 +75,7 @@
 
 .spin-earth-on-hover{
     
-    transition: ease 200s !important;
+    transition: ease 5s !important;
     transform: rotate(-3600deg) !important;
 }
 
@@ -214,7 +214,7 @@ li a:hover {
     transform: translateX(-50px);
     top: 75%;
     pointer-events: none;
-    animation: rocket-movement 200s linear infinite both running;
+    animation: rocket-movement 20s linear infinite both running;
 }
 
 .object_earth{
@@ -240,7 +240,7 @@ li a:hover {
 }
 
 .object_astronaut{
-    animation: rotate-astronaut 200s infinite linear both alternate;
+    animation: rotate-astronaut 70s infinite linear both alternate;
 }
 
 .box_astronaut{
@@ -249,7 +249,7 @@ li a:hover {
     top: 60%;
     right: 20%;
     will-change: transform;
-    animation: move-astronaut 50s infinite linear both alternate;
+    animation: move-astronaut 10s infinite linear both alternate;
 }
 
 .image-404{

@@ -4,6 +4,19 @@
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+    };
+  },
+  // created() {
+  //   const cookiesRes = this.$cookies.getAll()
+  //   console.log(cookiesRes)
+  // }
+}
+</script>
+
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',

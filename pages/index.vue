@@ -1,67 +1,103 @@
 <template>
-  <div class="container">
+  <layout>
+    <Navbar/>
     <div>
-      <logo />
-      <h1 class="title">BLOG</h1>
-      <h2 class="subtitle">My lovely Nuxt.js project</h2>
-      <nuxt-link to="/menu" class="test" tag="h2">Page 2</nuxt-link>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
-      </div>
+      <h1>BLOG</h1>
+      <h2 >My lovely Nuxt.js project</h2>
+      <nuxt-link to="/menu" tag="h2">Page 2</nuxt-link>
+      <content >
+        <button @click="stripe">stripe</button>
+        <button @click="getuser">getuser</button>
+        <button @click="getname">getname</button>
+        <button @click="getPDF">pupeter</button>
+        <button @click="setCookies">setCookies</button>
+        <button @click="removeCookies">removeCookies</button>
+      </content>
+      <p>{{name}}</p>
+      <p>{{cookies}} </p>
+      <p>{{isConnected}} </p>
     </div>
-  </div>
+  </layout>
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
+import Navbar from "~/components/Navbar.vue";
 
 export default {
   components: {
-    Logo
+    Navbar
+  },
+  data() {
+    return {
+      users: [],
+      name: null
+    };
+  },
+  methods: {
+    async getname() {
+      const res = await this.$axios.get("http://localhost:8000/getname");
+      console.log(res.data.userList);
+    },
+    getuser() {
+      this.$axios
+        .get("http://localhost:8000/getuser")
+        .then(res => console.log(res.data.userList));
+    },
+    stripe() {
+      const stripe = Stripe("pk_test_oevDNgnDf7MryOlZOKGdT3AV");
+      this.$axios.post("http://localhost:8000/session").then(res => {
+        stripe
+          .redirectToCheckout({
+            sessionId: res.data.id
+          })
+          .then(function(result) {
+            console.log(result.error.message);
+          });
+      });
+    },
+    async getPDF() {
+      const response = await this.$axios.get("http://localhost:8000/pupetter", {
+        responseType: "arraybuffer",
+        headers: {
+          Accept: "application/pdf"
+        }
+      });
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `facture.pdf`;
+      link.click();
+    },
+    setCookies() {
+      this.$cookies.set('test', '001122334455')
+    },
+    removeCookies() {
+      this.$cookies.remove('test');
+      this.$store.dispatch('User/isConnected')
+    }
+  },
+  computed : {
+    cookies() {
+      return this.$store.state.cookies
+    },
+    isConnected () {
+      // return this.$store.getters['menuId/isConnected']
+      return this.$store.state.User.isConnected
+    },
   }
 };
 </script>
 
 <style scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>
 
 <style lang="scss" scoped>
 $break-small: 900px;
 .test {
-  color : yellow;
+  color: yellow;
   @media (max-width: $break-small) {
-    color : blue;
+    color: blue;
   }
 }
 </style>
